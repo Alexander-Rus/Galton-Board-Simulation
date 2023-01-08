@@ -2,8 +2,8 @@
 This is a physics simulation project to try and re-create a Galton Board using C++. 
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Alexander-Rus/Language-Speed-Test/main/img/Screenshot%20from%202023-01-07%2015-25-21.png"
-  alt="Example output of speed test"
+<img src="https://raw.githubusercontent.com/Alexander-Rus/Galton-Board-Simulation-in-C-/main/img/Screenshot%20from%202023-01-08%2014-45-41.png"
+  alt="Galton Board"
   width="894" height="255">
 </p>
 
@@ -12,9 +12,9 @@ This is a physics simulation project to try and re-create a Galton Board using C
 A Galton board is a device that is intended to show the central limit theorem. A vertical board has pegs arranged in a triangular pattern, balls are then dropped from the very top and will bounce off the pegs. In theory, the ball has a 50/50 percent chance of bouncing either left or right, and will then strike another peg. This process continues until all balls reach the bottom and land in specific columns. The number of balls in each column will show a bell curve, and this is supposed to demonstrate the central limit theorem.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Alexander-Rus/Language-Speed-Test/main/img/Screenshot%20from%202023-01-07%2015-25-21.png"
-  alt="Example output of speed test"
-  width="894" height="255">
+<img src="https://raw.githubusercontent.com/Alexander-Rus/Galton-Board-Simulation-in-C-/main/img/1.png"
+  alt="Galton Board Example"
+  width="1920" height="1080">
 </p>
 
 The goal of this project was the re-create this effect in c++. In order to do this balls would need to be able to realistically interact with pegs, and be collected at the bottom of the board. 
@@ -37,9 +37,9 @@ However this simulation does not perfectly reflect a real like example of a Glat
 * The balls are able to bounce off the pegs and eachother, but often times will bounce too much and automatically go to the furthest columns.
 * The initial velocity has to be set to have a slight left or right value, otherwise the balls will land ontop of each other and form a tower.
 <p align="center">
-<img src="https://raw.githubusercontent.com/Alexander-Rus/Language-Speed-Test/main/img/Screenshot%20from%202023-01-07%2015-25-21.png"
-  alt="Example output of speed test"
-  width="894" height="255">
+<img src="https://raw.githubusercontent.com/Alexander-Rus/Galton-Board-Simulation-in-C-/main/img/Screenshot%20from%202023-01-08%2014-42-17.png"
+  alt="Example balls stacking"
+  width="1002" height="1045">
 </p>
 
 The code to prevent this from happening is the following:
