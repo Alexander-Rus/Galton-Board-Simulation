@@ -12,9 +12,9 @@ This is a physics simulation project to try and re-create a Galton Board using C
 A Galton board is a device that is intended to show the central limit theorem. A vertical board has pegs arranged in a triangular pattern, balls are then dropped from the very top and will bounce off the pegs. In theory, the ball has a 50/50 percent chance of bouncing either left or right, and will then strike another peg. This process continues until all balls reach the bottom and land in specific columns. The number of balls in each column will show a bell curve, and this is supposed to demonstrate the central limit theorem.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Alexander-Rus/Galton-Board-Simulation-in-C-/main/img/1.png"
+<img src="https://raw.githubusercontent.com/Alexander-Rus/Galton-Board-Simulation-in-C-/main/img/Screenshot%20from%202023-01-08%2015-08-17.png"
   alt="Galton Board Example"
-  width="1920" height="1080">
+  width="915" height="650">
 </p>
 
 The goal of this project was the re-create this effect in c++. In order to do this balls would need to be able to realistically interact with pegs, and be collected at the bottom of the board. 
