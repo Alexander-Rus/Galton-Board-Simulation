@@ -4,7 +4,7 @@ This is a physics simulation project to try and re-create a Galton Board using C
 <p align="center">
 <img src="https://raw.githubusercontent.com/Alexander-Rus/Galton-Board-Simulation-in-C-/main/img/Screenshot%20from%202023-01-08%2014-45-41.png"
   alt="Galton Board"
-  width="964" height="997">
+  width="964" height="990">
 </p>
 
 ## Glaton Board
