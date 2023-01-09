@@ -20,9 +20,10 @@ A Galton board is a device that is intended to show the central limit theorem. A
 The goal of this project was the re-create this effect in c++. In order to do this balls would need to be able to realistically interact with pegs, and be collected at the bottom of the board. 
 
 ## C++ Simulation
-c++ is often used as a tool for physcis simulation due to it's efficiency. To calculate the physical interaction between the balls and pegs, I used Verlet integration.Verlet integration approximates the position and velocity of an object at a discrete time step. Given the position and velocity of an object at time t, Verlet integration can be used to compute the position of the object at time t+dt (where dt is the time step). This is done using the following equations:
+C++ is often used as a tool for physcis simulation due to it's efficiency. To calculate the physical interaction between the balls and pegs, I used Verlet integration.Verlet integration approximates the position and velocity of an object at a discrete time step. Given the position and velocity of an object at time t, Verlet integration can be used to compute the position of the object at time t+dt (where dt is the time step). This is done using the following equations:
 
 > x(t+dt) = x(t) + v(t) * dt + (a(t) * dt^2) / 2
+
 > v(t+dt) = v(t) + (a(t) + a(t+dt)) / 2 * dt
 
 Here, x(t) is the position of the object at time t, v(t) is its velocity at time t, and a(t) is its acceleration at time t. These equations allow you to compute the position and velocity of the object at the next time step, given its position, velocity, and acceleration at the current time step.
