@@ -45,7 +45,7 @@ int main() {
 
     float x_rect[6] = {205, 315, 425, 535, 655, 765};
 
-     // Check for inputs to close window
+     // Check for inputs to close window 
     while (window.isOpen()) {
         sf::Event event{};
 
