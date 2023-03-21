@@ -22,7 +22,7 @@ int main() {
     Renderer renderer{window};
 
 
-    solver.setConstraint({static_cast<float>(WINDOW_WIDTH) * 0.5f, static_cast<float>(WINDOW_HEIGHT) * 0.5f}, 450.0f);
+    solver.setConstraint({static_cast<float>(WINDOW_WIDTH) * 0.5, static_cast<float>(WINDOW_HEIGHT) * 0.5}, 450.0);
     solver.setSubStepsCount(8); 
     solver.setSimulationUpdateRate(FRAME_RATE);
 
