@@ -164,24 +164,31 @@ private:
     }
 
     // Prevent objects from leaving bounds of simulation
-    void applyConstraint()
-    {
+    void applyConstraint(){
         for (auto& obj : m_objects) {
-            if (obj.position.y >= 990.0f) {
-                obj.position.y = 990.0f;
+            if (obj.position.y >= 994.0f) {
+                obj.position.y = 994.0f;
             }
-            if (obj.position.x <= 170.0f) {
-                obj.position.x = 170.0f;
-            } else if (obj.position.x >= 840.0f) {
-                obj.position.x = 840.0f;
+            if (obj.position.x <= 4.0f) {
+                obj.position.x = 4.0f;
+            } else if (obj.position.x >= 994.0f) {
+                obj.position.x = 994.0f;
+            }
+
+            if(obj.position.y > 700){
+                selectColumn(obj);
             }
         }
     }
 
-    void updateObjects(float dt)
-    {
+    void updateObjects(float dt){
         for (auto& obj : m_objects) {
             obj.update(dt);
         }
+    }
+
+    void selectColumn(VerletObject &obj){
+        float entrance_x = obj.position.x;
+        
     }
 };

@@ -34,6 +34,7 @@ int main() {
     const int MAX_OBJECTS = 500;
     sf::Clock clock;
 
+    /*
     float x_positions[57] = {500.0, 445.0, 555.0, 610.0, 500.0, 390.0, 335.0, 445.0, 555.0, 675.0, 280.0, 610.0, 500.0, 390.0, 730.0, 225.0, 335.0, 445.0, 555.0, 675.0, 785.0, 225.0, 225.0, 225.0, 225.0, 225.0, 225.0, 335.0, 335.0, 335.0, 335.0, 335.0, 335.0, 445.0, 445.0, 445.0, 445.0, 445.0, 445.0, 555.0, 555.0, 555.0, 555.0, 555.0, 555.0, 675.0, 675.0, 675.0, 675.0, 675.0, 675.0, 785.0, 785.0, 785.0, 785.0, 785.0, 785.0 };
     float y_positions[57] = {350.0, 420.0, 420.0, 490.0, 490.0, 490.0, 560.0, 560.0, 560.0, 560.0, 630.0, 630.0, 630.0, 630.0, 630.0, 700.0, 700.0, 700.0, 700.0, 700.0, 700.0, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000 };
 
@@ -42,6 +43,7 @@ int main() {
         solver.setObjectVelocity(object1, INITIAL_SPEED * sf::Vector2f{0.01, 1});
         object1.color = sf::Color::White;
     }
+    */
 
     float x_rect[6] = {205, 315, 425, 535, 655, 765};
 
@@ -59,7 +61,7 @@ int main() {
         if (solver.getObjectsCount() < MAX_OBJECTS && clock.getElapsedTime().asSeconds() >= OBJECT_DELAY) {
             
             clock.restart();
-            auto& object = solver.addObject(INITIAL_POSITION, 10.0f, true);
+            auto& object = solver.addObject(INITIAL_POSITION, 6.0f, true);
             std::random_device rd;  // Will be used to obtain a seed for the random number engine
             std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
             std::uniform_int_distribution<> dis(0, 1);
@@ -74,10 +76,10 @@ int main() {
         window.clear(sf::Color::Black);
         //Render using the renderer passing the solver
         renderer.render(solver);
-        for(int i=0; i< 6; i++) {
+        for(int i=0; i<31; i++) {
             sf::RectangleShape rect1;
-            rect1.setPosition(sf::Vector2f(x_rect[i], 780));
-            rect1.setSize(sf::Vector2f(40, 220));
+            rect1.setPosition(sf::Vector2f(i * 33.3, 700));
+            rect1.setSize(sf::Vector2f(3, 300));
             rect1.setFillColor(sf::Color(100, 100, 100));
             window.draw(rect1);
         }
