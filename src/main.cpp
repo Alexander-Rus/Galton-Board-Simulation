@@ -28,26 +28,21 @@ int main() {
 
 
     // Simulation parameters
-    const float OBJECT_DELAY = 0.9f;
+    const float OBJECT_DELAY = 0.2f;
     const float INITIAL_SPEED = 10.0f;
-    const sf::Vector2f INITIAL_POSITION = {500.0f, 200.0f};
-    const int MAX_OBJECTS = 500;
+    const sf::Vector2f INITIAL_POSITION = {500.0, 100.0};
+    const int MAX_OBJECTS = 1000;
     sf::Clock clock;
 
-    /*
-    float x_positions[57] = {500.0, 445.0, 555.0, 610.0, 500.0, 390.0, 335.0, 445.0, 555.0, 675.0, 280.0, 610.0, 500.0, 390.0, 730.0, 225.0, 335.0, 445.0, 555.0, 675.0, 785.0, 225.0, 225.0, 225.0, 225.0, 225.0, 225.0, 335.0, 335.0, 335.0, 335.0, 335.0, 335.0, 445.0, 445.0, 445.0, 445.0, 445.0, 445.0, 555.0, 555.0, 555.0, 555.0, 555.0, 555.0, 675.0, 675.0, 675.0, 675.0, 675.0, 675.0, 785.0, 785.0, 785.0, 785.0, 785.0, 785.0 };
-    float y_positions[57] = {350.0, 420.0, 420.0, 490.0, 490.0, 490.0, 560.0, 560.0, 560.0, 560.0, 630.0, 630.0, 630.0, 630.0, 630.0, 700.0, 700.0, 700.0, 700.0, 700.0, 700.0, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000, 800.0, 840.0, 880.0, 920.0, 960.0, 1000 };
-
-    for(int i = 0; i < 57; i++) {
-        auto& object1 = solver.addObject(sf::Vector2f(x_positions[i], y_positions[i]), 20.0f, false);
-        solver.setObjectVelocity(object1, INITIAL_SPEED * sf::Vector2f{0.01, 1});
-        object1.color = sf::Color::White;
+    for(int j{0}; j < 6; j++){
+        for(int i{0}; i < 30; i++){
+            auto& object1 = solver.addObject(sf::Vector2f(i*33.3 + 1.5, 400 + (j * 50)), 4.0f, false);
+            solver.addObject(sf::Vector2f(i*33.3+18.15, 400 + (j * 50 + 25)), 4.0f, false);
+        }
     }
-    */
+    
 
-    float x_rect[6] = {205, 315, 425, 535, 655, 765};
-
-     // Check for inputs to close window 
+     // Check for inputs to close window
     while (window.isOpen()) {
         sf::Event event{};
 
@@ -56,31 +51,31 @@ int main() {
                 window.close();
             }
         }
-
         
         if (solver.getObjectsCount() < MAX_OBJECTS && clock.getElapsedTime().asSeconds() >= OBJECT_DELAY) {
             
             clock.restart();
-            auto& object = solver.addObject(INITIAL_POSITION, 6.0f, true);
-            std::random_device rd;  // Will be used to obtain a seed for the random number engine
-            std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-            std::uniform_int_distribution<> dis(0, 1);
+            std::random_device rd; 
+            std::mt19937 gen(rd()); 
+            std::uniform_int_distribution<> dis(300, 700);
             float random_number = dis(gen);
-            solver.setObjectVelocity(object, INITIAL_SPEED * sf::Vector2f{random_number ? -0.05:0.05, 1});
+
+            auto& object = solver.addObject(sf::Vector2f(random_number, 100.0), 6.0f, true);
+            solver.setObjectVelocity(object, sf::Vector2f(INITIAL_SPEED, 1));
             object.color = sf::Color(255, 70, 64);
         }
 
         //Update the solver
         solver.update();
         //Clear the window with a black background
-        window.clear(sf::Color::Black);
+        window.clear(sf::Color(33, 33, 33, 32));
         //Render using the renderer passing the solver
         renderer.render(solver);
         for(int i=0; i<31; i++) {
             sf::RectangleShape rect1;
             rect1.setPosition(sf::Vector2f(i * 33.3, 700));
             rect1.setSize(sf::Vector2f(3, 300));
-            rect1.setFillColor(sf::Color(100, 100, 100));
+            rect1.setFillColor(sf::Color(104, 104, 104));
             window.draw(rect1);
         }
 		window.display();
