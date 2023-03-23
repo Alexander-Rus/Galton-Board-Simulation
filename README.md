@@ -2,9 +2,9 @@
 This is a physics simulation project to try and re-create a Galton Board using C++. 
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Alexander-Rus/Galton-Board-Simulation/main/img/Gatlon%20Board.png"
+<img src="https://raw.githubusercontent.com/Alexander-Rus/Galton-Board-Simulation/main/img/galton-board%20example.gif"
   alt="Galton Board"
-  width="964" height="725">
+  width="400">
 </p>
 
 ## Glaton Board
