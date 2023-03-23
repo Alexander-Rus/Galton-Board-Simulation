@@ -20,13 +20,12 @@ struct VerletObject
 
     VerletObject() = default;
 
-    VerletObject(sf::Vector2f position_, float radius_, bool movable_, int obj_index_)
+    VerletObject(sf::Vector2f position_, float radius_, bool movable_)
         : position{position_}
         , position_last{position_}
         , acceleration{0.0f, 0.0f}
         , radius{radius_}
         , movable{movable_}
-        , obj_index{obj_index_}
     {}
 
     void update(float dt) {
@@ -74,17 +73,16 @@ public:
         int grid_x = (int)position.x / 10;
         int grid_y = (int)position.y / 10;
         mygrid[grid_x][grid_y].push_back(global_index);
-        int temp_index = global_index;
         global_index++;
-    
-        return m_objects.emplace_back(position, radius, movable, temp_index);
+        
+        return vector_of_objects.emplace_back(position, radius, movable);
     }
 
     void update(){
         //takes the time which is a float and updates it with the frame time
-        m_time += m_frame_dt;
+        local_time += frame_dt;
         const float STEP_DT = getStepDt();
-        for (int i{m_sub_steps}; i--;) {
+        for (int i{num_sub_steps}; i--;) {
             applyGravity();
             checkCollisions();
             applyConstraint(); 
@@ -93,16 +91,16 @@ public:
     }
 
     void setSimulationUpdateRate(int rate){
-        m_frame_dt = 1.0f / static_cast<float>(rate);
+        frame_dt = 1.0f / static_cast<float>(rate);
     }
 
     void setConstraint(sf::Vector2f position, float radius){
-        m_constraint_center = position;
-        m_constraint_radius = radius;
+        center_contraints = position;
+        radius_contraint = radius;
     }
 
     void setSubStepsCount(int sub_steps) {
-        m_sub_steps = sub_steps;
+        num_sub_steps = sub_steps;
     }
 
     void setObjectVelocity(VerletObject& object, sf::Vector2f v) {
@@ -110,39 +108,39 @@ public:
     }
 
     const std::vector<VerletObject>& getObjects() const {
-        return m_objects;
+        return vector_of_objects;
     }
 
     sf::Vector3f getConstraint() const{
-        return {m_constraint_center.x, m_constraint_center.y, m_constraint_radius};
+        return {center_contraints.x, center_contraints.y, radius_contraint};
     }
 
     int getObjectsCount() const{
-        return m_objects.size();
+        return vector_of_objects.size();
     }
 
     float getTime() const{
-        return m_time;
+        return local_time;
     }
 
     float getStepDt() const{
-        return m_frame_dt / static_cast<float>(m_sub_steps);
+        return frame_dt / static_cast<float>(num_sub_steps);
     }
 
 private:
-    int m_sub_steps = 1;
-    sf::Vector2f m_gravity = {0.0f, 1000.0f};
-    sf::Vector2f m_constraint_center;
-    float m_constraint_radius  = 100.0f;
-    std::vector<VerletObject> m_objects;
-    float m_time = 0.0f;
-    float m_frame_dt = 0.0f;
+    int num_sub_steps = 1;
+    sf::Vector2f object_gravity = {0.0f, 1000.0f};
+    sf::Vector2f center_contraints;
+    float radius_contraint  = 100.0f;
+    std::vector<VerletObject> vector_of_objects;
+    float local_time = 0.0f;
+    float frame_dt = 0.0f;
     std::vector<int> mygrid[100][100];
     int global_index = 0;
 
     void applyGravity(){
-        for (auto& obj : m_objects) {
-            obj.accelerate(m_gravity);
+        for (auto& obj : vector_of_objects) {
+            obj.accelerate(object_gravity);
         }
     }
 
@@ -151,25 +149,21 @@ private:
     //This formula for collison check is from https://github.com/johnBuffer/VerletSFML
     void checkCollisions(){
         const float    response_coef = 0.75f;
-        const int objects_count = m_objects.size();
+        const int objects_count = vector_of_objects.size();
         std::vector<int> objects_in_area;
         // Iterate on all objects
         for (int i{0}; i < objects_count; ++i) {
-            VerletObject& object_1 = m_objects[i];
+            VerletObject& object_1 = vector_of_objects[i];
 
-            //std::vector<int> same_cell_contents = getContentsAtCell(object_1);
-            std::vector<int> surrounding_contents = getSurroundingCells(object_1);
-            surrounding_contents.erase(std::remove(surrounding_contents.begin(), surrounding_contents.end(), object_1.obj_index), surrounding_contents.end());
-            std::vector<VerletObject> objects_in_area;
-            for(int i{0}; i < surrounding_contents.size(); i++){
-                objects_in_area.emplace_back(m_objects[surrounding_contents[i]]);
-            }
-            //Okay you should have the list of objects around object 1, you will then loop through and do calculations.
 
+            //From this object, get the list of indexes around it
+            //std::vector<int> surrounding_contents = getSurroundingCells(object_1);
+            //We then removet the index of the current object
+            //surrounding_contents.erase(std::remove(surrounding_contents.begin(), surrounding_contents.end(), i), surrounding_contents.end());
 
             // Iterate on object involved in new collision pairs
             for (int k{i + 1}; k < objects_count; ++k) {
-                VerletObject&      object_2 = m_objects[k];
+                VerletObject&      object_2 = vector_of_objects[k];
                 const sf::Vector2f v        = object_1.position - object_2.position;
                 const float        dist2    = v.x * v.x + v.y * v.y;
                 const float        min_dist = object_1.radius + object_2.radius;
@@ -185,12 +179,13 @@ private:
                     object_2.position += n * (mass_ratio_1 * delta);
                 }
             }
+            
         }
     }
 
     // Prevent objects from leaving bounds of simulation
     void applyConstraint(){
-        for (auto& obj : m_objects) {
+        for (auto& obj : vector_of_objects) {
             if (obj.position.y >= 994.0f) {
                 obj.position.y = 994.0f;
             }
@@ -207,14 +202,35 @@ private:
     }
 
     void updateObjects(float dt){
-        for (auto& obj : m_objects) {
-            obj.update(dt);
+        for(int i{0}; i< vector_of_objects.size(); i++){
+            int grid_x = (int)vector_of_objects[i].position.x / 10;
+            int grid_y = (int)vector_of_objects[i].position.y / 10;
+            std::vector<int> temp_vec = mygrid[grid_x][grid_y];
+            temp_vec.erase(std::remove(temp_vec.begin(), temp_vec.end(), i), temp_vec.end());
+            mygrid[grid_x][grid_y] = temp_vec;
+
+            vector_of_objects[i].update(dt);
+
+            int grid_x_new = (int)vector_of_objects[i].position.x / 10;
+            int grid_y_new = (int)vector_of_objects[i].position.y / 10;
+            mygrid[grid_x_new][grid_y_new].push_back(i);
+        }
+        
+        
+        /*
+        for (auto& obj : vector_of_objects) {
+
             int grid_x = (int)obj.position.x / 10;
             int grid_y = (int)obj.position.y / 10;
             std::vector<int> temp_vec = mygrid[grid_x][grid_y];
             temp_vec.erase(std::remove(temp_vec.begin(), temp_vec.end(), obj.obj_index), temp_vec.end());
             mygrid[grid_x][grid_y] = temp_vec;
+            
+            obj.update(dt);
+
+                        
         }
+        */
     }
 
     std::vector<int> getContentsAtCell(VerletObject& obj){
@@ -224,6 +240,7 @@ private:
     }
 
     std::vector<int> getSurroundingCells(VerletObject obj){
+        //Get the position on the grid of the object
         int grid_x = (int)obj.position.x / 10;
         int grid_y = (int)obj.position.y / 10;
         std::vector<int> builder;
